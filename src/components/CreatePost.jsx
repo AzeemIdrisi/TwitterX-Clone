@@ -20,7 +20,7 @@ function CreatePost() {
               <Avatar round={true} size="50" />
             </div>
             <input
-              className="ml-3 w-full outline-none  "
+              className="text-xl ml-3 w-full outline-none  "
               type="text"
               placeholder="What is happening?!"
               name=""
@@ -28,7 +28,7 @@ function CreatePost() {
             />
           </div>
           <div className="flex justify-between items-center p-4 border-b border-gray-300">
-            <FaImage />
+            <FaImage className="ml-5" size={"20"} />
             <button className=" py-2 border-none px-5 text-lg rounded-full text-white font-semibold bg-[#1D9Bf0] hover:bg-[#2e86c0]">
               Post
             </button>

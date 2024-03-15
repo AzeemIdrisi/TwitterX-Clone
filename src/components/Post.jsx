@@ -13,7 +13,7 @@ function Post() {
           <div className="ml-2 w-full">
             <div className="flex items-center ">
               <h1 className="font-bold">Azeem Idrisi</h1>
-              <p className="text-gray-500 ml-2">@Azeem_5202</p>
+              <p className="text-gray-500 ml-2 text-sm">@Azeem_5202</p>
               <p className="text-gray-500 ml-2">. 1m</p>
             </div>
             <div>
