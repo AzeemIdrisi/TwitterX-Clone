@@ -6,7 +6,7 @@ function CreatePost() {
   return (
     <div>
       <div className="w-[100%]">
-        <div className="flex justify-evenly  items-center border-b border-gray-200 ">
+        <div className="flex justify-evenly  items-center border-b border-gray-100 ">
           <div className="font-semibold hover:cursor-pointer w-full hover:bg-gray-100 text-center px-4 py-3">
             For You
           </div>
@@ -27,7 +27,7 @@ function CreatePost() {
               id=""
             />
           </div>
-          <div className="flex justify-between items-center p-4 border-b border-gray-300">
+          <div className="flex justify-between items-center p-4 border-b border-gray-100">
             <FaImage className="ml-5" size={"20"} />
             <button className=" py-2 border-none px-5 text-lg rounded-full text-white font-semibold bg-[#1D9Bf0] hover:bg-[#2e86c0]">
               Post

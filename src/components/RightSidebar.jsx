@@ -24,7 +24,7 @@ function RightSidebar() {
             <p className="text-sm">@PrinceChandra</p>
           </div>
           <div>
-            <button className="ml-2 px-2.5 py-1 font-bold bg-black rounded-full cursor-pointer hover:bg-gray-800 text-white">
+            <button className="ml-2 px-3 py-1 font-bold bg-black rounded-full cursor-pointer hover:bg-gray-800 text-white">
               Follow
             </button>
           </div>
