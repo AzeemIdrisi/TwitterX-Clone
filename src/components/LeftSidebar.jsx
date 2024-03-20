@@ -12,7 +12,7 @@ function LeftSidebar() {
       <div>
         <div className="my-4 px-4 py-4">
           <img
-            className="w-[40px] invert"
+            className="w-[25%] invert"
             src="https://www.nikon.com.au/media/wysiwyg/ZLogo.png"
             alt="logo"
           />
