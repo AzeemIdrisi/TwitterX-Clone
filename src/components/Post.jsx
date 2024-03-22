@@ -8,9 +8,9 @@ function Post() {
   return (
     <div>
       <div>
-        <div className="flex  p-4">
-          <Avatar round={true} size="50" />
-          <div className="ml-2 w-full">
+        <div className="flex p-4">
+          <Avatar round={true} size="50" src="https://picsum.photos/100/100" />
+          <div className="ml-2 ">
             <div className="flex items-center ">
               <h1 className="font-bold">Azeem Idrisi</h1>
               <p className="text-gray-500 ml-2 text-sm">@Azeem_5202</p>

@@ -18,7 +18,7 @@ function RightSidebar() {
       <div className="p-4 my-5 bg-gray-100 rounded-lg w-full ">
         <h1 className="font-bold text-xl">Who to follow</h1>
         <div className="my-4 flex items-center w-full justify-between">
-          <Avatar size="40" round={true} />
+          <Avatar src="https://picsum.photos/200" size="40" round={true} />
           <div className="ml-2">
             <h1 className="font-bold">Prince</h1>
             <p className="text-sm">@PrinceChandra</p>

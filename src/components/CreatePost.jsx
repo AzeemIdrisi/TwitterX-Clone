@@ -17,7 +17,7 @@ function CreatePost() {
         <div>
           <div className="flex p-4">
             <div>
-              <Avatar round={true} size="50" />
+              <Avatar src="https://picsum.photos/200" round={true} size="50" />
             </div>
             <input
               className="text-xl ml-3 w-full outline-none  "
