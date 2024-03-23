@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 function Profile() {
   return (
-    <div className="w-[50%]">
+    <div className="w-[50%] border-l border-r border-gray-200">
       <div>
         <div className="flex items-center">
           <Link
