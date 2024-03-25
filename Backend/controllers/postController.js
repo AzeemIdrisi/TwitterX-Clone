@@ -136,3 +136,66 @@ export const bookmarkOrUnbookmarkPost = async (req, res) => {
     console.log(error);
   }
 };
+
+export const allPosts = async (req, res) => {
+  try {
+    // Returns current user + their following's posts
+    const id = req.params.id;
+    if (!id) {
+      return res.status(401).json({
+        message: "All fields are required.",
+        success: false,
+      });
+    }
+    const loggedInUser = await User.findById(id);
+    if (!loggedInUser) {
+      return res.status(401).json({
+        message: "User does not exists.",
+        success: false,
+      });
+    }
+    const loggedInUsersPosts = await Post.find({ userID: id });
+    const followingUsersPosts = await Promise.all(
+      loggedInUser.following.map((otherUsersID) => {
+        return Post.find({ userID: otherUsersID });
+      })
+    );
+
+    return res.status(200).json({
+      tweets: loggedInUsersPosts.concat(...followingUsersPosts),
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const followingPosts = async (req, res) => {
+  try {
+    // Returns current user + their following's posts
+    const id = req.params.id;
+    if (!id) {
+      return res.status(401).json({
+        message: "All fields are required.",
+        success: false,
+      });
+    }
+    const loggedInUser = await User.findById(id);
+    if (!loggedInUser) {
+      return res.status(401).json({
+        message: "User does not exists.",
+        success: false,
+      });
+    }
+    const followingUsersPosts = await Promise.all(
+      loggedInUser.following.map((otherUsersID) => {
+        return Post.find({ userID: otherUsersID });
+      })
+    );
+
+    return res.status(200).json({
+      tweets: followingUsersPosts,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};

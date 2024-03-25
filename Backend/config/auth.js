@@ -17,7 +17,6 @@ const isAuthenticated = async (req, res, next) => {
       token,
       process.env.TOKEN_SECRET
     );
-    console.log(decode);
     req.user = decode.userID;
     console.log("Authorisation complete");
     next();
