@@ -87,3 +87,137 @@ export const Logout = (req, res) => {
     success: true,
   });
 };
+
+export const getProfile = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    if (!id) {
+      return res.status(401).json({
+        message: "All fields are required.",
+        success: false,
+      });
+    }
+
+    // Get user profile except password from mongoDB
+    const user = await User.findById(id).select("-password");
+    if (!user) {
+      return res.status(401).json({
+        message: "User not found",
+        success: false,
+      });
+    }
+    return res.status(200).json({
+      user,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getOtherUsers = async (req, res) => {
+  try {
+    const id = req.body.id;
+    const otherUsers = await User.find({ _id: { $ne: id } }).select(
+      "-password"
+    );
+    if (!otherUsers) {
+      return res.status(401).json({
+        message: "Other users not found",
+        success: false,
+      });
+    }
+    return res.status(200).json({ otherUsers });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const follow = async (req, res) => {
+  try {
+    const loggedInUserID = req.body.id;
+    const userID = req.params.id;
+
+    if (!loggedInUserID || !userID) {
+      return res.status(401).json({
+        message: "All fields are required.",
+        success: false,
+      });
+    }
+    const user = await User.findById(userID);
+    const loggedInUser = await User.findById(loggedInUserID);
+
+    if (!user) {
+      return res.status(401).json({
+        message: "User does not exist.",
+        success: false,
+      });
+    }
+    // Checking if user exist in followers
+    if (!user.followers.includes(loggedInUserID)) {
+      await user.updateOne({
+        $push: { followers: loggedInUserID },
+      });
+      await loggedInUser.updateOne({
+        $push: { following: userID },
+      });
+
+      console.log(`${loggedInUser.name} is now following ${user.name}.`);
+      return res.status(200).json({
+        message: `${loggedInUser.name} is now following ${user.name}.`,
+        success: true,
+      });
+    } else {
+      return res.status(400).json({
+        message: `${loggedInUser.name} is already following ${user.name}.`,
+        success: false,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const unfollow = async (req, res) => {
+  try {
+    const loggedInUserID = req.body.id;
+    const userID = req.params.id;
+
+    if (!loggedInUserID || !userID) {
+      return res.status(401).json({
+        message: "All fields are required.",
+        success: false,
+      });
+    }
+    const user = await User.findById(userID);
+    const loggedInUser = await User.findById(loggedInUserID);
+
+    if (!user) {
+      return res.status(401).json({
+        message: "User does not exist.",
+        success: false,
+      });
+    }
+    // Checking if user exist in followers
+    if (user.followers.includes(loggedInUserID)) {
+      await user.updateOne({
+        $pull: { followers: loggedInUserID },
+      });
+      await loggedInUser.updateOne({
+        $pull: { following: userID },
+      });
+
+      console.log(`${loggedInUser.name} unfollowed ${user.name}.`);
+      return res.status(200).json({
+        message: `${loggedInUser.name} unfollowed ${user.name}.`,
+        success: true,
+      });
+    } else {
+      return res.status(400).json({
+        message: `${loggedInUser.name} was not following ${user.name}.`,
+        success: false,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};

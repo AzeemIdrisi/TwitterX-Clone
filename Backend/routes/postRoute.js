@@ -9,6 +9,8 @@ import {
 
 const router = express.Router();
 
+// Here isAuthenticated is the middleware that checks first
+// if the request maker is authorised to make the request
 router.route("/create").post(isAuthenticated, createPost);
 router.route("/delete/:id").delete(isAuthenticated, deletePost);
 router.route("/like/:id").put(isAuthenticated, likeOrUnlikePost);
