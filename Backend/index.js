@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import databaseConnection from "./config/database.js";
 import cookieParser from "cookie-parser";
 import userRoute from "./routes/userRoute.js";
+import postRoute from "./routes/postRoute.js";
 
 dotenv.config({ path: ".env" });
 const app = express();
@@ -14,6 +15,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/v1/user", userRoute);
+app.use("/api/v1/post", postRoute);
+
 app.get("/", (req, res) => {
   res.status(200).json({
     message: "Hello Zenix",

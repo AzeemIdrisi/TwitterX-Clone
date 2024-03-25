@@ -6,7 +6,7 @@ const tweetSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    like: {
+    likes: {
       type: Array,
       default: [],
     },
@@ -16,12 +16,7 @@ const tweetSchema = new mongoose.Schema(
     },
     userID: {
       type: mongoose.Schema.Types.ObjectId,
-
       ref: "User",
-    },
-    password: {
-      type: String,
-      required: true,
     },
   },
   { timestamps: true }

@@ -1,6 +1,7 @@
 import User from "../models/userSchema.js";
 import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
+
 export const Register = async (req, res) => {
   try {
     const { name, username, email, password } = req.body;
@@ -46,9 +47,6 @@ export const Login = async (req, res) => {
       });
     }
     const user = await User.findOne({ email: email });
-    console.log("user datea : ");
-    console.log(user);
-    console.log("user datea : ");
     if (!user) {
       return res.status(401).json({
         message: "User does not exist with this email.",
@@ -69,7 +67,7 @@ export const Login = async (req, res) => {
     const token = await jwt.sign(tokenData, process.env.TOKEN_SECRET, {
       expiresIn: "1d",
     });
-
+    console.log("Login Success.");
     return res
       .status(201)
       .cookie("token", token, { expriresIn: "1d", httpOnly: true })
@@ -80,4 +78,12 @@ export const Login = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+export const Logout = (req, res) => {
+  console.log("Logout Success.");
+  return res.cookie("token", "", { expiresIn: new Date(Date.now()) }).json({
+    message: "User logged out successfully.",
+    success: true,
+  });
 };

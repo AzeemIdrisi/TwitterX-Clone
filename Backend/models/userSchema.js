@@ -28,6 +28,14 @@ const userSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
+    likedPosts: {
+      type: Array,
+      default: [],
+    },
+    bookmarkedPosts: {
+      type: Array,
+      default: [],
+    },
   },
   { timestamps: true }
 );
