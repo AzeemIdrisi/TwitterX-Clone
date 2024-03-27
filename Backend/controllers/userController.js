@@ -73,6 +73,7 @@ export const Login = async (req, res) => {
       .cookie("token", token, { expriresIn: "1d", httpOnly: true })
       .json({
         message: `Welcome Back ${user.name}`,
+        user,
         success: true,
       });
   } catch (error) {
@@ -117,7 +118,7 @@ export const getProfile = async (req, res) => {
 
 export const getOtherUsers = async (req, res) => {
   try {
-    const id = req.body.id;
+    const id = req.params.id;
     const otherUsers = await User.find({ _id: { $ne: id } }).select(
       "-password"
     );

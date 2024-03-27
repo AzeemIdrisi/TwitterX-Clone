@@ -2,8 +2,13 @@ import React from "react";
 import Avatar from "react-avatar";
 import { IoArrowBack } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import useGetProfile from "../hooks/useGetProfile";
+import { useSelector } from "react-redux";
 
 function Profile() {
+  const { user, profile } = useSelector((store) => store.user);
+  useGetProfile(user?._id);
+
   return (
     <div className="w-[50%] border-l border-r border-gray-200">
       <div>
@@ -15,7 +20,7 @@ function Profile() {
             <IoArrowBack size={"25px"} />
           </Link>
           <div className="mx-2 p-2">
-            <h1 className="font-bold text-lg ">Azeem Idrisi</h1>
+            <h1 className="font-bold text-lg ">{profile?.name}</h1>
             <p className="text-sm ">10 posts</p>
           </div>
         </div>
@@ -38,8 +43,8 @@ function Profile() {
             </button>
           </div>
           <div className="m-4">
-            <h1 className="font-bold text-xl ">Azeem Idrisi</h1>
-            <p className="">@AzeemIdrisi</p>
+            <h1 className="font-bold text-xl ">{profile?.name}</h1>
+            <p className="">@{profile?.username}</p>
           </div>
           <div className="m-4 text-sm">
             <p>

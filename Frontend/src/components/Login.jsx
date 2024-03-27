@@ -2,16 +2,23 @@ import React, { useState } from "react";
 import axios from "axios";
 import { USER_API_END_POINT, POST_API_END_POINT } from "../utils/constant";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { getUser } from "../redux/userSlice";
+
 function Login() {
+  //All the states and constants
   const [name, setName] = useState("");
   const [username, setUserame] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [isLogin, setisLogin] = useState(true);
-  function handleClick() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  //all the functions
+  const handleClick = () => {
     setisLogin(!isLogin);
-  }
+  };
   const submitHandler = async (event) => {
     event.preventDefault();
     console.log(name, email);
@@ -32,8 +39,10 @@ function Login() {
             withCredentials: true,
           }
         );
+        dispatch(getUser(res?.data?.user));
         console.log(res);
         if (res.data.success) {
+          navigate("/");
           toast.success(res.data.message);
         }
       } catch (error) {
@@ -60,6 +69,7 @@ function Login() {
         );
         console.log(res);
         if (res.data.success) {
+          setisLogin(true);
           toast.success(res.data.message);
         }
       } catch (error) {
@@ -69,6 +79,7 @@ function Login() {
     }
   };
 
+  // Return data
   return (
     <div className="flex justify-center items-center w-screen h-screen">
       <div className="flex items-center w-[80%] justify-evenly">
