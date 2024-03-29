@@ -48,10 +48,7 @@ function Profile() {
             <p className="">@{profile?.username}</p>
           </div>
           <div className="m-4 text-sm">
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum culpa
-              harum, optio quod expedita.
-            </p>
+            <p>When you are down, The only place to go is up!</p>
           </div>
         </div>
       </div>

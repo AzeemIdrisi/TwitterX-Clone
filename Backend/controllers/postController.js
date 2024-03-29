@@ -193,7 +193,7 @@ export const followingPosts = async (req, res) => {
     );
 
     return res.status(200).json({
-      tweets: followingUsersPosts,
+      tweets: [].concat(...followingUsersPosts),
     });
   } catch (error) {
     console.log(error);
