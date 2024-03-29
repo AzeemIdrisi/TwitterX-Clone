@@ -1,8 +1,40 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import Avatar from "react-avatar";
 import { FaImage } from "react-icons/fa6";
+import { POST_API_END_POINT } from "../utils/constant.js";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { getRefresh } from "../redux/postSlice.js";
 
 function CreatePost() {
+  const [content, setContent] = useState("");
+  const dispatch = useDispatch();
+  const { user } = useSelector((store) => store.user);
+  const submitHandler = async (event) => {
+    event.preventDefault();
+    try {
+      const res = await axios.post(
+        `${POST_API_END_POINT}/create`,
+        {
+          description: content,
+          id: user?._id,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      dispatch(getRefresh());
+      if (res.data.success) {
+        toast.success(res.data.message);
+      }
+      setContent("");
+    } catch (error) {
+      toast.error(error.response.data.message);
+      console.log(error);
+    }
+  };
+
   return (
     <div>
       <div className="w-[100%]">
@@ -23,13 +55,17 @@ function CreatePost() {
               className="text-xl ml-3 w-full outline-none  "
               type="text"
               placeholder="What is happening?!"
-              name=""
-              id=""
+              name="content"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
             />
           </div>
           <div className="flex justify-between items-center p-4 border-b border-gray-100">
             <FaImage className="ml-5" size={"20"} />
-            <button className=" py-2 border-none px-5 text-lg rounded-full text-white font-semibold bg-[#1D9Bf0] hover:bg-[#2e86c0]">
+            <button
+              onClick={submitHandler}
+              className=" py-2 border-none px-5 text-lg rounded-full text-white font-semibold bg-[#1D9Bf0] hover:bg-[#2e86c0]"
+            >
               Post
             </button>
           </div>

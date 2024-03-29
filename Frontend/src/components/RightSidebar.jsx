@@ -3,6 +3,7 @@ import Avatar from "react-avatar";
 import { IoIosSearch } from "react-icons/io";
 import useGetOtherUsers from "../hooks/useGetOtherUsers";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 function RightSidebar() {
   // custom hook
@@ -25,7 +26,10 @@ function RightSidebar() {
         {otherUsers?.map((otherUser) => {
           return (
             <>
-              <div className="my-4 flex items-center w-full justify-between">
+              <div
+                key={otherUser._id}
+                className="my-4 flex  w-full justify-between"
+              >
                 <div className="flex item-center ">
                   <Avatar
                     src="https://picsum.photos/200"
@@ -38,9 +42,11 @@ function RightSidebar() {
                   </div>
                 </div>
                 <div>
-                  <button className="ml-2 px-3 py-1 font-bold bg-black rounded-full cursor-pointer hover:bg-gray-800 text-white">
-                    Follow
-                  </button>
+                  <Link to={`profile/${otherUser?._id}`}>
+                    <button className="ml-2 px-3 py-1 font-bold bg-black rounded-full cursor-pointer hover:bg-gray-800 text-white">
+                      Follow
+                    </button>
+                  </Link>
                 </div>
               </div>
             </>
