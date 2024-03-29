@@ -4,11 +4,35 @@ import { IoIosSearch } from "react-icons/io";
 import useGetOtherUsers from "../hooks/useGetOtherUsers";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { USER_API_END_POINT } from "../utils/constant.js";
 
 function RightSidebar() {
   // custom hook
   const { user, otherUsers } = useSelector((store) => store.user);
   useGetOtherUsers(user?._id);
+
+  const handleFollow = async (otherUserID) => {
+    try {
+      const res = await axios.post(
+        `${USER_API_END_POINT}/follow/${otherUserID}`,
+        {
+          id: user?._id,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.data.success) {
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      toast.error(error.response.data.message);
+      console.log(error);
+    }
+  };
+
   return (
     <div className="w-[%]">
       <div className="my-2 p-3 bg-gray-100 rounded-full w-full flex items-center">
@@ -31,22 +55,27 @@ function RightSidebar() {
                 className="my-4 flex  w-full justify-between"
               >
                 <div className="flex item-center ">
-                  <Avatar
-                    src="https://picsum.photos/200"
-                    size="40"
-                    round={true}
-                  />
-                  <div className="ml-2">
-                    <h1 className="font-bold">{otherUser.name}</h1>
-                    <p className="text-sm">@{otherUser.username}</p>
-                  </div>
+                  <Link to={`profile/${otherUser?._id}`}>
+                    <Avatar
+                      src="https://picsum.photos/200"
+                      size="40"
+                      round={true}
+                    />
+                  </Link>
+                  <Link to={`profile/${otherUser?._id}`}>
+                    <div className="ml-2">
+                      <h1 className="font-bold">{otherUser.name}</h1>
+                      <p className="text-sm">@{otherUser.username}</p>
+                    </div>
+                  </Link>
                 </div>
                 <div>
-                  <Link to={`profile/${otherUser?._id}`}>
-                    <button className="ml-2 px-3 py-1 font-bold bg-black rounded-full cursor-pointer hover:bg-gray-800 text-white">
-                      Follow
-                    </button>
-                  </Link>
+                  <button
+                    onClick={() => handleFollow(otherUser._id)}
+                    className="ml-2 px-3 py-1 font-bold bg-black rounded-full cursor-pointer hover:bg-gray-800 text-white"
+                  >
+                    Follow
+                  </button>
                 </div>
               </div>
             </>
