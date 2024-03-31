@@ -6,13 +6,15 @@ import { CiUser } from "react-icons/ci";
 import { CiBookmark } from "react-icons/ci";
 import { IoIosLogOut } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { USER_API_END_POINT } from "../utils/constant.js";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { getUser, getMyProfile, getOtherUsers } from "../redux/userSlice.js";
 
 function LeftSidebar() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { user } = useSelector((store) => store.user);
   const logoutHandler = async () => {
     try {
@@ -20,9 +22,11 @@ function LeftSidebar() {
         withCredentials: true,
       });
       if (res.data.success) {
+        dispatch(getUser(null));
+        dispatch(getOtherUsers(null));
+        dispatch(getMyProfile(null));
         toast.success(res?.data?.message);
         navigate("/login");
-        navigate;
       }
     } catch (error) {
       toast.error(error?.response?.data?.message);
@@ -63,7 +67,7 @@ function LeftSidebar() {
             <h1 className="font-semibold text-lg ml-2">Notifications</h1>
           </div>
           <Link
-            to={`/profile/${user._id}`}
+            to={`/profile/${user?._id}`}
             className="flex items-center my-3 px-4 py-2 hover:bg-gray-100 rounded-lg hover:cursor-pointer"
           >
             <div>
