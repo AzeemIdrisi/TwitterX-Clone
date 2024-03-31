@@ -48,14 +48,14 @@ function CreatePost() {
         <div className="flex justify-evenly  items-center border-b border-gray-100 ">
           <div
             onClick={handleForYou}
-            className={`${isActive ? "border-b-2 border-blue-600" : null}
+            className={`${isActive ? "border-b-2 border-[#1D9Bf0]" : null}
               font-semibold hover:cursor-pointer w-full hover:bg-gray-100 text-center px-4 py-3`}
           >
             For You
           </div>
           <div
             onClick={handleFollowing}
-            className={`${!isActive ? "border-b-2 border-blue-600" : null}
+            className={`${!isActive ? "border-b-2 border-[#1D9Bf0]" : null}
               font-semibold hover:cursor-pointer w-full hover:bg-gray-100 text-center px-4 py-3`}
           >
             Following

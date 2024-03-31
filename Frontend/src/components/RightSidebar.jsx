@@ -2,39 +2,67 @@ import React from "react";
 import Avatar from "react-avatar";
 import { IoIosSearch } from "react-icons/io";
 import useGetOtherUsers from "../hooks/useGetOtherUsers";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { USER_API_END_POINT } from "../utils/constant.js";
+import { followToggle } from "../redux/userSlice.js";
+import { getRefresh } from "../redux/postSlice.js";
 
 function RightSidebar() {
   // custom hook
   const { user, otherUsers } = useSelector((store) => store.user);
   useGetOtherUsers(user?._id);
+  const dispatch = useDispatch();
 
-  const handleFollow = async (otherUserID) => {
-    try {
-      const res = await axios.post(
-        `${USER_API_END_POINT}/follow/${otherUserID}`,
-        {
-          id: user?._id,
-        },
-        {
-          withCredentials: true,
+  const handleFollowUnfollow = async (id) => {
+    if (user.following.includes(id)) {
+      try {
+        const res = await axios.post(
+          `${USER_API_END_POINT}/unfollow/${id}`,
+          {
+            id: user?._id,
+          },
+          {
+            withCredentials: true,
+          }
+        );
+        if (res.data.success) {
+          dispatch(followToggle(id));
+          dispatch(getRefresh());
+
+          toast.success(res.data.message);
         }
-      );
-      if (res.data.success) {
-        toast.success(res.data.message);
+      } catch (error) {
+        toast.error(error?.response?.data?.message);
+        console.log(error);
       }
-    } catch (error) {
-      toast.error(error.response.data.message);
-      console.log(error);
+    } else {
+      try {
+        const res = await axios.post(
+          `${USER_API_END_POINT}/follow/${id}`,
+          {
+            id: user?._id,
+          },
+          {
+            withCredentials: true,
+          }
+        );
+        if (res.data.success) {
+          dispatch(followToggle(id));
+          dispatch(getRefresh());
+          toast.success(res.data.message);
+        }
+      } catch (error) {
+        toast.error(error?.response?.data?.message);
+        console.log(error);
+      }
     }
   };
 
   return (
-    <div className="w-[%]">
+    <div className="w-[30%]">
       <div className="my-2 p-3 bg-gray-100 rounded-full w-full flex items-center">
         <IoIosSearch size="22" />
         <input
@@ -64,17 +92,19 @@ function RightSidebar() {
                   </Link>
                   <Link to={`profile/${otherUser?._id}`}>
                     <div className="ml-2">
-                      <h1 className="font-bold">{otherUser.name}</h1>
+                      <h1 className="font-bold text-sm">{otherUser.name}</h1>
                       <p className="text-sm">@{otherUser.username}</p>
                     </div>
                   </Link>
                 </div>
                 <div>
                   <button
-                    onClick={() => handleFollow(otherUser._id)}
-                    className="ml-2 px-3 py-1 font-bold bg-black rounded-full cursor-pointer hover:bg-gray-800 text-white"
+                    onClick={() => handleFollowUnfollow(otherUser._id)}
+                    className=" text-white bg-black hover:bg-gray-800 font-bold m-4 rounded-full px-4 py-1 "
                   >
-                    Follow
+                    {user.following.includes(otherUser._id)
+                      ? "Following"
+                      : "Follow"}
                   </button>
                 </div>
               </div>

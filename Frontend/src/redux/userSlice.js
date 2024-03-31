@@ -18,8 +18,19 @@ const userSlice = createSlice({
     getMyProfile: (state, action) => {
       state.profile = action.payload;
     },
+    followToggle: (state, action) => {
+      if (state.user.following.includes(action.payload)) {
+        //removing userID from following
+        state.user.following = state.user.following.filter((itemID) => {
+          return itemID !== action.payload;
+        });
+      } else {
+        state.user.following.push(action.payload);
+      }
+    },
   },
 });
 
-export const { getUser, getOtherUsers, getMyProfile } = userSlice.actions;
+export const { getUser, getOtherUsers, getMyProfile, followToggle } =
+  userSlice.actions;
 export default userSlice.reducer;

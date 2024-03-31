@@ -4,12 +4,12 @@ import useGetMyPosts from "../hooks/useGetMyPosts.js";
 import { CiBookmark, CiHeart } from "react-icons/ci";
 import { GoComment } from "react-icons/go";
 import { AiOutlineDelete } from "react-icons/ai";
-
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { USER_API_END_POINT, POST_API_END_POINT } from "../utils/constant.js";
 import toast from "react-hot-toast";
 import { getRefresh } from "../redux/postSlice.js";
+import { Link } from "react-router-dom";
 
 function Post() {
   const { user } = useSelector((store) => store.user);
@@ -83,15 +83,25 @@ function Post() {
     <div>
       {tweets?.map((tweet) => (
         <div key={tweet._id} className="flex p-4 w-full">
-          <Avatar round={true} size="50" src="https://picsum.photos/100/100" />
+          <Link to={`profile/${tweet?.userID}`}>
+            <Avatar
+              round={true}
+              size="50"
+              src="https://picsum.photos/100/100"
+            />
+          </Link>
           <div className="ml-2">
-            <div className="flex items-center">
-              <h1 className="font-bold">{tweetUsers[tweet.userID]}</h1>
-              <p className="text-gray-500 ml-2 text-sm">
-                @{tweetUsernames[tweet.userID]}
-              </p>
-              <p className="text-gray-500 ml-2">. 1m</p>
-            </div>
+            <Link to={`profile/${tweet?.userID}`}>
+              <div className="flex items-center">
+                <h1 className="font-bold">{tweetUsers[tweet.userID]}</h1>
+                <p className="text-gray-500 ml-2 text-sm">
+                  @{tweetUsernames[tweet.userID]}
+                </p>
+
+                <p className="text-gray-500 ml-2">. 1m</p>
+              </div>
+            </Link>
+
             <div className="w-72">
               <p>{tweet.content}</p>
             </div>

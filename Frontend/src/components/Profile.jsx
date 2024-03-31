@@ -3,15 +3,61 @@ import Avatar from "react-avatar";
 import { IoArrowBack } from "react-icons/io5";
 import { Link, useParams } from "react-router-dom";
 import useGetProfile from "../hooks/useGetProfile";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import { USER_API_END_POINT } from "../utils/constant.js";
+import toast from "react-hot-toast";
+import { getRefresh } from "../redux/postSlice.js";
+import axios from "axios";
+import { followToggle } from "../redux/userSlice.js";
 function Profile() {
-  const { profile } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
+  const { user, profile } = useSelector((store) => store.user);
   const { id } = useParams();
   useGetProfile(id);
 
+  const handleFollowUnfollow = async () => {
+    if (user.following.includes(id)) {
+      try {
+        const res = await axios.post(
+          `${USER_API_END_POINT}/unfollow/${id}`,
+          {
+            id: user?._id,
+          },
+          {
+            withCredentials: true,
+          }
+        );
+        if (res.data.success) {
+          dispatch(followToggle(id));
+          toast.success(res.data.message);
+        }
+      } catch (error) {
+        toast.error(error?.response?.data?.message);
+        console.log(error);
+      }
+    } else {
+      try {
+        const res = await axios.post(
+          `${USER_API_END_POINT}/follow/${id}`,
+          {
+            id: user?._id,
+          },
+          {
+            withCredentials: true,
+          }
+        );
+        if (res.data.success) {
+          dispatch(followToggle(id));
+          toast.success(res.data.message);
+        }
+      } catch (error) {
+        toast.error(error?.response?.data?.message);
+        console.log(error);
+      }
+    }
+  };
   return (
-    <div className="w-[50%] border-l border-r border-gray-200">
+    <div className="w-[45%] border-l border-r border-gray-200">
       <div>
         <div className="flex items-center">
           <Link
@@ -39,11 +85,20 @@ function Profile() {
             />
           </div>
           <div className="text-right">
-            <button className="text-sm hover:bg-gray-200 font-semibold m-2 rounded-full px-4 py-1 border-2 border-gray-400">
-              Edit Profile
-            </button>
+            {user?._id === id ? (
+              <button className="text-sm hover:bg-gray-200 font-semibold m-2 rounded-full px-4 py-1 border-2 border-gray-400">
+                Edit Profile
+              </button>
+            ) : (
+              <button
+                onClick={handleFollowUnfollow}
+                className=" text-white bg-black hover:bg-gray-800 font-bold m-4 rounded-full px-4 py-1 "
+              >
+                {user.following.includes(id) ? "Following" : "Follow"}
+              </button>
+            )}
           </div>
-          <div className="m-4">
+          <div className="mx-4 my-10">
             <h1 className="font-bold text-xl ">{profile?.name}</h1>
             <p className="">@{profile?.username}</p>
           </div>

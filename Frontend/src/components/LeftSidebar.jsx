@@ -5,10 +5,31 @@ import { IoIosNotificationsOutline } from "react-icons/io";
 import { CiUser } from "react-icons/ci";
 import { CiBookmark } from "react-icons/ci";
 import { IoIosLogOut } from "react-icons/io";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { USER_API_END_POINT } from "../utils/constant.js";
+import toast from "react-hot-toast";
+import axios from "axios";
+
 function LeftSidebar() {
+  const navigate = useNavigate();
   const { user } = useSelector((store) => store.user);
+  const logoutHandler = async () => {
+    try {
+      const res = await axios.get(`${USER_API_END_POINT}/logout`, {
+        withCredentials: true,
+      });
+      if (res.data.success) {
+        toast.success(res?.data?.message);
+        navigate("/login");
+        navigate;
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
+
+      console.log(error);
+    }
+  };
   return (
     <div className="w-[20%]">
       <div>
@@ -56,7 +77,10 @@ function LeftSidebar() {
             </div>
             <h1 className="font-semibold text-lg ml-2">Bookmarks</h1>
           </div>
-          <div className="flex items-center my-3 px-4 py-2 hover:bg-gray-100 rounded-lg hover:cursor-pointer">
+          <div
+            onClick={logoutHandler}
+            className="flex items-center my-3 px-4 py-2 hover:bg-gray-100 rounded-lg hover:cursor-pointer"
+          >
             <div>
               <IoIosLogOut size="25px" />
             </div>
