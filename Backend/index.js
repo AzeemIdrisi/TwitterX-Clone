@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: ["http://localhost:5173", "zenix-twitter.vercel.app"],
   credentials: true,
 };
 
